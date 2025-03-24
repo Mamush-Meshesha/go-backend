@@ -23,20 +23,21 @@ func main() {
 
 	log.Println("Successfully connected to the database")
 
-	if err := db.AutoMigrate(&models.Todo{}); err != nil {
+	if err := db.AutoMigrate(&models.Todo{}, &models.User{}); err != nil {
 		log.Fatalf("Failed to auto-migrate: %v\n", err)
 	}
 	log.Println("Database migration completed")
 
+	userRepo := repositories.NewUserRepository(db)
+	authService :=services.NewAuthService(userRepo)
 	todoRepo := repositories.NewTodoRepository(db)
 	todoService := services.NewTodoService(todoRepo)
 
 	r := gin.Default()
 
-	// Register routes before running the server
+	routes.SetupAuthRoutes(r, authService)
 	routes.SetupTodoRoutes(r, todoService)
 
-	// Add root route before starting the server
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "Welcome to the todo app"})
 	})
