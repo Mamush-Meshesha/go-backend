@@ -10,4 +10,4 @@ down:
 	docker compose down 
 
 migrate:
-	docker compose exec app ./todo-app migrate
+	docker compose exec ./todo-app migrate

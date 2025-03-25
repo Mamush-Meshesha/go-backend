@@ -6,6 +6,8 @@ type EmailConfig struct {
 	SMTPUsername string
 	SMTPPassword string
 	FromEmail	string
+	UseTLS       bool 
+	AppURL       string 
 }
 
 func LoadEmailConfig() *EmailConfig {
@@ -15,5 +17,6 @@ func LoadEmailConfig() *EmailConfig {
 		SMTPUsername: getEnv("SMTP_USERNAME", ""),
 		SMTPPassword: getEnv("SMTP_PASSWORD", ""),
 		FromEmail: getEnv("FROM_EMAIL", "nereply@golang.com"),
+		UseTLS:       true,
 	}
 }
